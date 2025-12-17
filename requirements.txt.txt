@@ -1,0 +1,46 @@
+# ======================================
+# Nailumy Trinkets – Project Requirements
+# ======================================
+
+# ----------------------
+# SERVER & ENVIRONMENT
+# ----------------------
+PHP >= 8.0
+Apache
+XAMPP
+HTTPS (required for production Midtrans)
+
+# ----------------------
+# PHP EXTENSIONS
+# ----------------------
+php-curl
+php-json
+php-openssl
+
+# ----------------------
+# FRONTEND (CDN BASED)
+# ----------------------
+HTML5
+CSS3
+JavaScript (ES6)
+
+Alpine.js v3.x (CDN)
+Feather Icons (CDN)
+Google Fonts (CDN)
+
+# ----------------------
+# PAYMENT GATEWAY
+# ----------------------
+Midtrans Snap (Sandbox)
+Midtrans PHP SDK
+
+# ----------------------
+# PAYMENT METHOD (TESTING)
+# ----------------------
+GoPay QR (Sandbox Simulation)
+
+# ----------------------
+# BROWSER SUPPORT
+# ----------------------
+Google Chrome
+Microsoft Edge

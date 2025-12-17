@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toko Nailumy Trinkets</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,100;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- My Style -->
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- alpinejs -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- app -->
+    <script src="src/app.js" async></script>
+
+    <!-- mitrans -->
+    <script
+      type="text/javascript"
+      src="https://app.sandbox.midtrans.com/snap/snap.js"
+      data-client-key="Mid-client-EWrVtbveULVCuyIS"
+    ></script>
+  </head>
+  <body>
+    <!-- Open Navbar -->
+    <nav class="navbar" x-data>
+      <a href="#" class="navbar-logo">Nailumy <span>Trinkets</span>.</a>
+
+      <div class="navbar-nav">
+        <a href="#home">Home</a>
+        <a href="#about">About </a>
+        <a href="#menu">Collection</a>
+        <a href="#products">Products</a>
+        <a href="#kontak">Contact</a>
+      </div>
+
+      <div class="navbar-extra">
+        <a href="#" id="search-button"> <i data-feather="search"></i></a>
+        <a href="#" id="shopping-cart-button"
+          ><i data-feather="shopping-cart"></i>
+          <span
+            class="quantity-badge"
+            x-show="$store.cart.quantity"
+            x-text="$store.cart.quantity"
+          ></span>
+        </a>
+        <a href="#" id="hamburger-menu"> <i data-feather="menu"></i></a>
+      </div>
+
+      <!-- Search Form start -->
+      <div class="search-form">
+        <input
+          type="search"
+          id="search-box"
+          placeholder="search here..."
+          x-model="$store.search.query"
+        />
+        <label for="search-box"><i data-feather="search"></i></label>
+      </div>
+      <!-- Search Form end -->
+
+      <!-- shopping-cart start -->
+      <div class="shopping-cart">
+        <template x-for="(item, index) in $store.cart.items" x-keys="index">
+          <div class="cart-item">
+            <img :src="`images/products/${item.img}`" :alt="item.name" />
+            <div class="item-detail">
+              <h3 x-text="item.name"></h3>
+              <div class="item-price">
+                <span x-text="rupiah(item.price)"></span> &times;
+                <button id="remove" @click="$store.cart.remove(item.id)">
+                  &minus;
+                </button>
+                <span x-text="item.quantity"></span>
+                <button id="add" @click="$store.cart.add(item)">&plus;</button>
+                &equals;
+                <span x-text="rupiah(item.total)"></span>
+              </div>
+            </div>
+          </div>
+        </template>
+        <!-- Jika kosong -->
+        <h4 x-show="$store.cart.items.length === 0">Cart is Empty</h4>
+
+        <h4 x-show="$store.cart.items.length">
+          Total : <span x-text="rupiah($store.cart.total)"></span>
+        </h4>
+
+        <div class="form-container" x-show="$store.cart.items.length">
+          <form action="" id="checkoutForm">
+            <input
+              type="hidden"
+              name="items"
+              x-model="JSON.stringify($store.cart.items)"
+            />
+            <input
+              type="hidden"
+              name="total"
+              x-model="JSON.stringify($store.cart.total)"
+            />
+            <h5>Customer Detail</h5>
+
+            <label for="name">
+              <span>Name</span>
+              <input type="text" name="name" id="name" />
+            </label>
+            <label for="email">
+              <span>Email</span>
+              <input type="email" name="email" id="email" />
+            </label>
+            <label for="address">
+              <span>Address</span>
+              <textarea
+                name="address"
+                id="address"
+                rows="3"
+                placeholder="Masukkan alamat lengkap&#10;(jalan, RT/RW, kecamatan, kota)"
+              ></textarea>
+            </label>
+            <label for="phone">
+              <span>Phone</span>
+              <input type="number" name="phone" id="phone" autocomplete="off" />
+            </label>
+
+            <button
+              class="checkout-button disabled"
+              type="submit"
+              id="checkout-button"
+              value="checkout"
+            >
+              checkout
+            </button>
+          </form>
+        </div>
+      </div>
+      <!-- shopping-cart end -->
+    </nav>
+
+    <!-- Clouse Navbar -->
+
+    <!-- Hero Section Start -->
+    <section class="hero" id="home">
+      <main class="content">
+        <h1>Shine Bright, Stay Cute,<span> Be You!</span></h1>
+        <p>Jadilah versi terbaikmu dengan kilau manis dari koleksi kami!✨</p>
+        <a href="#menu" class="cta">Buy Now</a>
+      </main>
+    </section>
+
+    <!-- Hero Section End -->
+
+    <!-- About Section start -->
+    <section id="about" class="about">
+      <h2><span>About</span> Us</h2>
+
+      <div class="row">
+        <div class="about-img">
+          <img src="images/about.jpg" alt="about us" />
+        </div>
+        <div class="content">
+          <h3>Kenapa memilih toko kami?</h3>
+          <br />
+          <p>Haii, selamat datang di dunia penuh kilau dan warna! ✨</p>
+          <p>
+            Kami adalah Nailumy Trinkets, tempat di mana setiap aksesoris dibuat
+            dengan cinta dan detail yang manis. Dari gelang berwarna pastel,
+            jepit rambut gemas, hingga kalung berkilau semua kami pilih untuk
+            membuat harimu lebih ceria dan gayamu makin imut. Karena kami
+            percaya, setiap orang punya pesona uniknya sendiri. Jadi, shine
+            bright, stay cute, be you! 🌷💖
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section end -->
+
+    <section id="menu" class="menu">
+      <h2><span>Lovely </span> Picks</h2>
+      <p>Jelajahi koleksi aksesoris kami dan temukan gaya unikmu sendiri! 🌸</p>
+
+      <div class="collection-wrapper">
+        <button class="slider-btn left">❮</button>
+
+        <div class="collection-slider">
+          <div class="collection-track">
+            <div class="collection-item">
+              <div class="img-wrap">
+                <img src="images/koleksi/1.1.jpg" />
+              </div>
+              <h3>- Jepitan Rambut -</h3>
+            </div>
+            <div class="collection-item">
+              <div class="img-wrap">
+                <img src="images/koleksi/2.1.jpg" />
+              </div>
+              <h3>- Kalung -</h3>
+            </div>
+            <div class="collection-item">
+              <div class="img-wrap">
+                <img src="images/koleksi/3.1.jpg" />
+              </div>
+              <h3>- Gelang -</h3>
+            </div>
+            <div class="collection-item">
+              <div class="img-wrap">
+                <img src="images/koleksi/4.1.jpg" />
+              </div>
+              <h3>- Anting -</h3>
+            </div>
+            <div class="collection-item">
+              <div class="img-wrap">
+                <img src="images/koleksi/5.1.jpg" />
+              </div>
+              <h3>- Jedai -</h3>
+            </div>
+            <div class="collection-item">
+              <div class="img-wrap">
+                <img src="images/koleksi/6.1.jpg" />
+              </div>
+              <h3>- Cincin -</h3>
+            </div>
+            <div class="collection-item">
+              <div class="img-wrap">
+                <img src="images/koleksi/7.2.jpg" />
+              </div>
+              <h3>- Bando -</h3>
+            </div>
+            <div class="collection-item">
+              <div class="img-wrap">
+                <img src="images/koleksi/8.1.jpg" />
+              </div>
+              <h3>- Iket Rambut -</h3>
+            </div>
+            <div class="collection-item">
+              <div class="img-wrap">
+                <img src="images/koleksi/9.1.jpg" />
+              </div>
+              <h3>- Jam Tangan -</h3>
+            </div>
+            <div class="collection-item">
+              <div class="img-wrap">
+                <img src="images/koleksi/10.1.jpg" />
+              </div>
+              <h3>- Kacamata -</h3>
+            </div>
+            <div class="collection-item">
+              <div class="img-wrap">
+                <img src="images/koleksi/13.jpg" />
+              </div>
+              <h3>- Jepit Rambut -</h3>
+            </div>
+            <!-- <div class="collection-item">
+              <div class="img-wrap">
+                <img src="images/koleksi/12.jpg" />
+              </div>
+              <h3>- Cincin -</h3>
+            </div> -->
+          </div>
+        </div>
+
+        <button class="slider-btn right">❯</button>
+      </div>
+    </section>
+
+    <!-- Menu Section End -->
+
+    <!-- Products section start -->
+    <section class="products" id="products" x-data="products">
+      <h2><span>Produk Unggulan</span> Kami</h2>
+      <p>
+        Klik produk pilihanmu, tambahkan ke keranjang, dan kami siap kirim
+        langsung ke rumahmu🛒
+      </p>
+
+      <div class="row">
+        <template x-for="item in filteredItems" :key="item.id">
+          <div class="product-card">
+            <div class="product-icons">
+              <a href="#" @click.prevent="$store.cart.add(item)">
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <image
+                    href="images/Finance/shopping-cart-line.svg"
+                    width="24"
+                    height="24"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="item-detail-button"
+                @click.prevent="
+     $store.modal.item = item;
+     $store.modal.open = true
+   "
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <image
+                    href="images/System/eye-line.svg"
+                    width="24"
+                    height="24"
+                  />
+                </svg>
+              </a>
+            </div>
+
+            <div class="product-image">
+              <img :src="`images/products/${item.img}`" :alt="item.name" />
+            </div>
+            <div class="product-content">
+              <h3 x-text="item.name"></h3>
+              <div class="product-stars">
+                <template x-for="i in 4" :key="i">
+                  <span
+                    class="star"
+                    :class="i <= (item.rating || 0) ? 'full' : 'empty'"
+                  >
+                    ★
+                  </span>
+                </template>
+              </div>
+
+              <div class="product-price">
+                <span x-text="rupiah(item.price)"></span>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </section>
+    <!-- Products section end -->
+
+    <!-- Contact section star -->
+
+    <!-- MAP FULL -->
+    <section id="kontak" class="kontak">
+      <h2><span>Contact</span> Us</h2>
+      <p>Let’s stay connected with NaLuMy Accessories! 💌</p>
+
+      <div class="contact-container">
+        <!-- MAP -->
+        <div class="contact-map">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.3849902964157!2d106.73458047453288!3d-6.344162262068895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ef77956ae9a9%3A0x68c63c11c8d2c0e9!2sUniversitas%20Pamulang!5e0!3m2!1sid!2sid!4v1759587887654!5m2!1sid!2sid"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="map"
+          ></iframe>
+        </div>
+
+        <!-- INFO -->
+        <div class="contact-info">
+          <div class="info-item">
+            <i data-feather="map-pin"></i>
+            <div>
+              <strong>Alamat Toko</strong>
+              <p>Jl. Maharaja No. 21, Pamulang, Tangerang Selatan</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <i data-feather="phone"></i>
+            <div>
+              <strong>Nomor Telepon</strong>
+              <p>0812-3456-7890</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <i data-feather="clock"></i>
+            <div>
+              <strong>Jam Operasional</strong>
+              <p>Setiap Hari • 09.00 – 21.00 WIB</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <i data-feather="mail"></i>
+            <div>
+              <strong>Email</strong>
+              <p>nailumytrinkets@gmail.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact section end -->
+
+    <!-- Review Section start -->
+    <section class="reviews">
+      <h2><span>Apa Kata</span> Mereka</h2>
+      <p>Testimoni jujur dari pelanggan setia Nailumy 💕</p>
+
+      <div class="review-container" id="reviewContainer">
+        <div class="review-row" id="reviewRow">
+          <div class="review-card">
+            <img src="images/review/empat.jpg" />
+          </div>
+          <div class="review-card">
+            <img src="images/review/satu.jpg" />
+          </div>
+          <div class="review-card">
+            <img src="images/review/dua.jpg" />
+          </div>
+          <div class="review-card">
+            <img src="images/review/lima.jpg" />
+          </div>
+          <div class="review-card">
+            <img src="images/review/enam.jpg" />
+          </div>
+          <div class="review-card">
+            <img src="images/review/tujuh.jpg" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Review Section end -->
+
+    <!-- footer star -->
+    <div class="SosialMedia">
+      <a
+        href="https://www.instagram.com/nailasalsabilla._?igsh=Z3EwOGZzazl4ZTcz&utm_source=qr"
+        target="_blank"
+        aria-label="Instagram"
+      >
+        <i data-feather="instagram"></i>
+      </a>
+      <a
+        href="https://wa.me/6285208579227"
+        target="_blank"
+        aria-label="WhatsApp"
+      >
+        <i data-feather="phone"></i>
+      </a>
+      <a
+        href="https://x.com/gurlyhun?t=J-Xmjj1wFrofez6_CobDkQ&s=09"
+        target="_blank"
+        aria-label="Twitter"
+      >
+        <i data-feather="twitter"></i>
+      </a>
+    </div>
+
+    <div class="links">
+      <a href="#home">Home</a>
+      <a href="#about"> About</a>
+      <a href="#menu"> Collection</a>
+      <a href="#kontak"> Contact</a>
+    </div>
+
+    <div class="des">
+      <p>Created By <a href="#nailumy">Nailumy</a>. | &copy 2025</p>
+    </div>
+
+    <!-- modal box item detail start -->
+    <div class="modal" x-data x-show="$store.modal.open" x-cloak>
+      <div class="modal-container">
+        <!-- Tombol close -->
+        <a
+          href="#"
+          class="close-icon"
+          @click.prevent="$store.modal.open = false"
+        >
+          <i data-feather="x"></i>
+        </a>
+
+        <!-- Isi modal -->
+        <div class="modal-content" x-data x-show="$store.modal.open">
+          <img
+            :src="'images/products/' + $store.modal.item.img"
+            :alt="$store.modal.item.name"
+          />
+
+          <div class="product-content">
+            <h3 x-text="$store.modal.item.name"></h3>
+            <p x-text="$store.modal.item.desc"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal box item detail end -->
+
+    <!-- Feather Icons -->
+    <script>
+      feather.replace();
+    </script>
+
+    <!-- My Javascript -->
+    <script src="js/script.js" defer></script>
+  </body>
+</html>
